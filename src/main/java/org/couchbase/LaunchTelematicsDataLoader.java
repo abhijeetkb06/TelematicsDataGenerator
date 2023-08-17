@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.IntStream;
 
 /**
  * This initiates the process of telematics data load generation in Couchbase.
@@ -19,13 +20,16 @@ public class LaunchTelematicsDataLoader {
 
 		BlockingQueue<List<JsonObject>> sharedTasksQueue = new LinkedBlockingQueue<List<JsonObject>>();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(20);
+		ExecutorService executorService = Executors.newFixedThreadPool(100);
 
-		for (int i=0;i<20;i++) {
+		IntStream.range(0, 10)
+				.forEach(i -> {
+					executorService.execute(new TelematicsDataProducer(sharedTasksQueue));
+				});
 
-			// Create number of task producer threads
-			executorService.execute(new TelematicsDataProducer(sharedTasksQueue));
-			executorService.execute(new TelematicsDataConsumer(sharedTasksQueue));
-		}
+		IntStream.range(0, 10)
+				.forEach(i -> {
+					executorService.execute(new TelematicsDataConsumer(sharedTasksQueue));
+				});
 	}
 }

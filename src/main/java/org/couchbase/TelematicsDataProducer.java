@@ -34,7 +34,7 @@ public class TelematicsDataProducer extends Thread {
                 System.out.println("@@@@@@@@@ PRODUCED @@@@@@@@ " + tasksQueue.size());
                 System.out.println(" Thread Name: " + Thread.currentThread().getName());
 
-                Thread.sleep(50);
+                Thread.sleep(25);
             } catch (InterruptedException e) {
             } catch (CouchbaseException ex) {
                 System.err.println("Something else happened: " + ex);

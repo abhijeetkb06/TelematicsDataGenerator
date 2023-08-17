@@ -1,6 +1,11 @@
 package org.couchbase;
 
+import com.couchbase.client.core.env.IoConfig;
+import com.couchbase.client.core.env.NetworkResolution;
+import com.couchbase.client.core.env.TimeoutConfig;
 import com.couchbase.client.java.*;
+import com.couchbase.client.java.env.ClusterEnvironment;
+
 import java.time.Duration;
 
 public class DatabaseConfiguration {
@@ -20,17 +25,34 @@ public class DatabaseConfiguration {
 	private static final Collection collection;
 
 	static {
+/*		ClusterEnvironment env = ClusterEnvironment.builder()
+				.ioConfig(IoConfig
+						.numKvConnections(100)
+				).build();
+		cluster = Cluster.connect(CONNECTION_STRING,  ClusterOptions.clusterOptions(USERNAME, PASSWORD).environment(env));*/
 		cluster = Cluster.connect(
 				CONNECTION_STRING,
 				ClusterOptions.clusterOptions(USERNAME, PASSWORD).environment(env -> {
 					env.applyProfile("wan-development");
 				})
 		);
+
+		/*ClusterEnvironment env = ClusterEnvironment.builder()
+				.timeoutConfig(TimeoutConfig
+						.kvTimeout(Duration.ofSeconds(5))
+						.queryTimeout(Duration.ofSeconds(10)))
+				.build();*/
+
+
+
+
+
 		bucket = cluster.bucket(BUCKET);
+		bucket.waitUntilReady(Duration.ofSeconds(10));
 		scope = bucket.scope(SCOPE);
 		collection = scope.collection(COLLECTION);
 
-		bucket.waitUntilReady(Duration.ofSeconds(10));
+
 	}
 
 	private DatabaseConfiguration() {

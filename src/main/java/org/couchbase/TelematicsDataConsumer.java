@@ -47,7 +47,7 @@ public class TelematicsDataConsumer extends Thread {
 		ReactiveBucket reactiveBucket = dbConfig.getBucket().reactive();
 		ReactiveScope reactiveScope = dbConfig.getScope().reactive();
 		ReactiveCollection reactiveCollection = dbConfig.getCollection().reactive();
-		int concurrentOps = 100;
+		int concurrentOps = 10;
 		return Flux.fromIterable(data)
 				.parallel(concurrentOps)
 				.runOn(Schedulers.boundedElastic()) // or one of your choice
