@@ -19,9 +19,9 @@ public class LaunchTelematicsDataLoader {
 
 		BlockingQueue<List<JsonObject>> sharedTasksQueue = new LinkedBlockingQueue<List<JsonObject>>();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(32);
+		ExecutorService executorService = Executors.newFixedThreadPool(20);
 
-		for (int i=0;i<32;i++) {
+		for (int i=0;i<20;i++) {
 
 			// Create number of task producer threads
 			executorService.execute(new TelematicsDataProducer(sharedTasksQueue));

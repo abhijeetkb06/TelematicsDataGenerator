@@ -4,6 +4,7 @@ package org.couchbase;
 import com.couchbase.client.core.error.CouchbaseException;
 import com.couchbase.client.java.json.JsonObject;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Instant;
@@ -17,7 +18,7 @@ public class TelematicsDataProducer extends Thread {
     private BlockingQueue<List<JsonObject>> tasksQueue;
 
     public TelematicsDataProducer(BlockingQueue<List<JsonObject>> tasksQueue) {
-        super("TASKS PRODUCER");
+        super("PRODUCER");
         this.tasksQueue = tasksQueue;
     }
 
@@ -30,8 +31,11 @@ public class TelematicsDataProducer extends Thread {
                 // the producer will add an element into the shared queue.
                 tasksQueue.put(bulkData);
 
-                System.out.println("@@@@@@@@@ TASK PRODUCED @@@@@@@@ " + tasksQueue.size());
+                System.out.println("@@@@@@@@@ PRODUCED @@@@@@@@ " + tasksQueue.size());
                 System.out.println(" Thread Name: " + Thread.currentThread().getName());
+
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
             } catch (CouchbaseException ex) {
                 System.err.println("Something else happened: " + ex);
             } catch (Exception e) {
@@ -46,6 +50,7 @@ public class TelematicsDataProducer extends Thread {
                 .parallel(10)
                 .runOn(Schedulers.parallel())
                 .map(i -> generateMockData(i))
+                .doOnError(e -> Flux.empty())
                 .sequential()
                 .collectList()
                 .block();

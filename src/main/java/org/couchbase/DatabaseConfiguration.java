@@ -1,15 +1,12 @@
 package org.couchbase;
 
-import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.Collection;
-import com.couchbase.client.java.Scope;
+import com.couchbase.client.java.*;
 
 import java.time.Duration;
 
 public class DatabaseConfiguration {
 
-	public static String CONNECTION_STRING = "couchbases://cb.go19gk8i9yxj4jom.cloud.couchbase.com";
+	public static String CONNECTION_STRING = "couchbases://cb.xsw2nfagx8itqwe.cloud.couchbase.com";
 	private static final String USERNAME = "abhijeet";
 
 	private static final String PASSWORD = "Password@P1";
@@ -19,7 +16,15 @@ public class DatabaseConfiguration {
 	private static final String SCOPE = "_default";
 	private static final String COLLECTION = "_default";
 
-	public static final Cluster cluster = Cluster.connect(CONNECTION_STRING, USERNAME, PASSWORD);
+	public static final Cluster cluster = Cluster.connect(
+			CONNECTION_STRING,
+			ClusterOptions.clusterOptions(USERNAME, PASSWORD).environment(env -> {
+				// Sets a pre-configured profile called "wan-development" to help avoid
+				// latency issues when accessing Capella from a different Wide Area Network
+				// or Availability Zone (e.g. your laptop).
+				env.applyProfile("wan-development");
+			})
+	);
 	public static final Bucket bucket= cluster.bucket(BUCKET);;
 	public static final Scope scope =bucket.scope(SCOPE);
 
