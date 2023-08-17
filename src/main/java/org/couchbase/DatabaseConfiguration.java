@@ -10,7 +10,7 @@ import java.time.Duration;
 
 public class DatabaseConfiguration {
 
-	private static final String CONNECTION_STRING = "couchbases://cb.xsw2nfagx8itqwe.cloud.couchbase.com";
+	private static final String CONNECTION_STRING = "couchbases://cb.qa0ahhlpdg60bjiq.cloud.couchbase.com";
 	private static final String USERNAME = "abhijeet";
 	private static final String PASSWORD = "Password@P1";
 	private static final String BUCKET = "fleetdata";
@@ -53,19 +53,19 @@ public class DatabaseConfiguration {
 		return instance;
 	}
 
-	public Cluster getCluster() {
-		return cluster;
+	public ReactiveCluster getCluster() {
+		return cluster.reactive();
 	}
 
-	public Bucket getBucket() {
-		return bucket;
+	public ReactiveBucket getBucket() {
+		return bucket.reactive();
 	}
 
-	public Scope getScope() {
-		return scope;
+	public ReactiveScope getScope() {
+		return scope.reactive();
 	}
 
-	public Collection getCollection() {
-		return collection;
+	public ReactiveCollection getCollection() {
+		return collection.reactive();
 	}
 }

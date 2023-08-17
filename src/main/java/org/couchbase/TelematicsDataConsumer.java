@@ -13,6 +13,8 @@ import reactor.core.scheduler.Schedulers;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
+import static org.couchbase.TelematicsDataProducer.generateMockDataParallel;
+
 public class TelematicsDataConsumer extends Thread {
 
 	// Read data to consume once data is loaded in queue
@@ -32,26 +34,23 @@ public class TelematicsDataConsumer extends Thread {
 				// Remove the user from shared queue and process
 				bulkInsert(tasksQueue.take());
 
+//				bulkInsert(generateMockDataParallel());
 				System.out.println(" CONSUMED \n");
 				System.out.println(" Thread Name: " + Thread.currentThread().getName());
 //				Thread.sleep(2000);
 			}
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private List<MutationResult> bulkInsert(List<JsonObject> data) {
 		DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
-		ReactiveCluster reactiveCluster = dbConfig.getCluster().reactive();
-		ReactiveBucket reactiveBucket = dbConfig.getBucket().reactive();
-		ReactiveScope reactiveScope = dbConfig.getScope().reactive();
-		ReactiveCollection reactiveCollection = dbConfig.getCollection().reactive();
-		int concurrentOps = 10;
+		int concurrentOps = 20;
 		return Flux.fromIterable(data)
 				.parallel(concurrentOps)
 				.runOn(Schedulers.boundedElastic()) // or one of your choice
-				.flatMap(doc -> reactiveCollection.upsert(doc.getString("MessageId"),doc))
+				.flatMap(doc -> dbConfig.getCollection().upsert(doc.getString("MessageId"),doc))
 		        .doOnError(e -> Flux.empty())
 //                .concatMap(doc -> collection.upsert(doc.getString("key"),doc, UpsertOptions.upsertOptions().durability(finalDlevel)),16)
 				.sequential()

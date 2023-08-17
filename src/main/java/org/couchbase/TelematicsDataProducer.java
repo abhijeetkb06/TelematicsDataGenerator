@@ -34,7 +34,7 @@ public class TelematicsDataProducer extends Thread {
                 System.out.println("@@@@@@@@@ PRODUCED @@@@@@@@ " + tasksQueue.size());
                 System.out.println(" Thread Name: " + Thread.currentThread().getName());
 
-                Thread.sleep(25);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
             } catch (CouchbaseException ex) {
                 System.err.println("Something else happened: " + ex);
@@ -46,8 +46,8 @@ public class TelematicsDataProducer extends Thread {
 
     public static List<JsonObject> generateMockDataParallel() {
 
-        return Flux.range(1, 10)
-                .parallel(10)
+        return Flux.range(1, 20)
+                .parallel(20)
                 .runOn(Schedulers.parallel())
                 .map(i -> generateMockData(i))
                 .doOnError(e -> Flux.empty())
