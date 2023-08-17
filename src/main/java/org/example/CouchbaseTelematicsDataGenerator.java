@@ -77,7 +77,7 @@ public class CouchbaseTelematicsDataGenerator {
     private static JsonObject generateMockData() {
         Random random = new Random();
         JsonObject jsonData = JsonObject.create();
-        jsonData.put("MessageId", "telematics" + UUID.randomUUID());
+        jsonData.put("MessageId", UUID.randomUUID());
         jsonData.put("DeviceId", "vehicle" + random.nextInt(100));
         jsonData.put("EventTime", Instant.now().toString());
         jsonData.put("Orgs", JsonObject.create().put("org1", random.nextInt(100)).put("org2", random.nextInt(100)));
