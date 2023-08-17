@@ -14,12 +14,12 @@ public class DatabaseConfiguration {
 
 	private static volatile DatabaseConfiguration instance;
 
-	private final Cluster cluster;
-	private final Bucket bucket;
-	private final Scope scope;
-	private final Collection collection;
+	private static final Cluster cluster;
+	private static final Bucket bucket;
+	private static final Scope scope;
+	private static final Collection collection;
 
-	private DatabaseConfiguration() {
+	static {
 		cluster = Cluster.connect(
 				CONNECTION_STRING,
 				ClusterOptions.clusterOptions(USERNAME, PASSWORD).environment(env -> {
@@ -31,6 +31,10 @@ public class DatabaseConfiguration {
 		collection = scope.collection(COLLECTION);
 
 		bucket.waitUntilReady(Duration.ofSeconds(10));
+	}
+
+	private DatabaseConfiguration() {
+		// Private constructor to prevent instantiation from outside
 	}
 
 	public static DatabaseConfiguration getInstance() {
