@@ -25,11 +25,6 @@ public class DatabaseConfiguration {
 	private static final Collection collection;
 
 	static {
-/*		ClusterEnvironment env = ClusterEnvironment.builder()
-				.ioConfig(IoConfig
-						.numKvConnections(100)
-				).build();
-		cluster = Cluster.connect(CONNECTION_STRING,  ClusterOptions.clusterOptions(USERNAME, PASSWORD).environment(env));*/
 		cluster = Cluster.connect(
 				CONNECTION_STRING,
 				ClusterOptions.clusterOptions(USERNAME, PASSWORD).environment(env -> {
@@ -37,22 +32,10 @@ public class DatabaseConfiguration {
 				})
 		);
 
-		/*ClusterEnvironment env = ClusterEnvironment.builder()
-				.timeoutConfig(TimeoutConfig
-						.kvTimeout(Duration.ofSeconds(5))
-						.queryTimeout(Duration.ofSeconds(10)))
-				.build();*/
-
-
-
-
-
 		bucket = cluster.bucket(BUCKET);
 		bucket.waitUntilReady(Duration.ofSeconds(10));
 		scope = bucket.scope(SCOPE);
 		collection = scope.collection(COLLECTION);
-
-
 	}
 
 	private DatabaseConfiguration() {

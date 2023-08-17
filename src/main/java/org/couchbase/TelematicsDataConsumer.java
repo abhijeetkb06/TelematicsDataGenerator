@@ -53,7 +53,6 @@ public class TelematicsDataConsumer extends Thread {
 				.runOn(Schedulers.boundedElastic()) // or one of your choice
 				.flatMap(doc -> reactiveCollection.upsert(doc.getString("MessageId"),doc))
 		        .doOnError(e -> Flux.empty())
-//				.doOnError(e -> Mono.empty())
 //                .concatMap(doc -> collection.upsert(doc.getString("key"),doc, UpsertOptions.upsertOptions().durability(finalDlevel)),16)
 				.sequential()
 				.collectList()
