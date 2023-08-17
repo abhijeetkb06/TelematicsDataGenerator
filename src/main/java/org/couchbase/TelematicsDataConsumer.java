@@ -42,11 +42,11 @@ public class TelematicsDataConsumer extends Thread {
 	}
 
 	private List<MutationResult> bulkInsert(List<JsonObject> data) {
-
-		ReactiveCluster reactiveCluster = DatabaseConfiguration.cluster.reactive();
-		ReactiveBucket reactiveBucket = DatabaseConfiguration.bucket.reactive();
-		ReactiveScope reactiveScope = DatabaseConfiguration.scope.reactive();
-		ReactiveCollection reactiveCollection = DatabaseConfiguration.collection.reactive();
+		DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
+		ReactiveCluster reactiveCluster = dbConfig.getCluster().reactive();
+		ReactiveBucket reactiveBucket = dbConfig.getBucket().reactive();
+		ReactiveScope reactiveScope = dbConfig.getScope().reactive();
+		ReactiveCollection reactiveCollection = dbConfig.getCollection().reactive();
 		int concurrentOps = 100;
 		return Flux.fromIterable(data)
 				.parallel(concurrentOps)
