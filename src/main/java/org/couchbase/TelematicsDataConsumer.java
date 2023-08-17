@@ -1,0 +1,58 @@
+package org.couchbase;
+
+import com.couchbase.client.java.ReactiveBucket;
+import com.couchbase.client.java.ReactiveCluster;
+import com.couchbase.client.java.ReactiveCollection;
+import com.couchbase.client.java.ReactiveScope;
+import com.couchbase.client.java.json.JsonObject;
+import com.couchbase.client.java.kv.MutationResult;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+
+public class TelematicsDataConsumer extends Thread {
+
+	// Read data to consume once data is loaded in queue
+	private BlockingQueue<List<JsonObject>> tasksQueue;
+
+	public TelematicsDataConsumer(BlockingQueue<List<JsonObject>> tasksQueue) {
+		super("TASKS CONSUMER");
+		this.tasksQueue = tasksQueue;
+	}
+
+	public void run() {
+		try {
+			while (true) {
+				
+				System.out.println("***************QUEUE SIZE************** "+ tasksQueue.size());
+
+				// Remove the user from shared queue and process
+				bulkInsert(tasksQueue.take());
+
+				System.out.println("TASK CONSUMED \n");
+				System.out.println(" Thread Name: " + Thread.currentThread().getName());
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private List<MutationResult> bulkInsert(List<JsonObject> data) {
+
+		ReactiveCluster reactiveCluster = DatabaseConfiguration.cluster.reactive();
+		ReactiveBucket reactiveBucket = DatabaseConfiguration.bucket.reactive();
+		ReactiveScope reactiveScope = DatabaseConfiguration.scope.reactive();
+		ReactiveCollection reactiveCollection = DatabaseConfiguration.collection.reactive();
+		int concurrentOps = 1;
+		return Flux.fromIterable(data)
+				.parallel(concurrentOps)
+				.runOn(Schedulers.boundedElastic()) // or one of your choice
+				.flatMap(doc -> reactiveCollection.upsert(doc.getString("MessageId"),doc))
+//                .concatMap(doc -> collection.upsert(doc.getString("key"),doc, UpsertOptions.upsertOptions().durability(finalDlevel)),16)
+				.sequential()
+				.collectList()
+				.block();
+	}
+}
