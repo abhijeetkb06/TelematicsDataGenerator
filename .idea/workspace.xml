@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fa543fd-38f2-4880-a4a0-30ca9a08a612" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/couchbase/ConcurrencyConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/couchbase/DatabaseConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/couchbase/DatabaseConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/couchbase/LaunchTelematicsDataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/couchbase/LaunchTelematicsDataLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/couchbase/TelematicsDataConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/couchbase/TelematicsDataConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/couchbase/TelematicsDataProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/couchbase/TelematicsDataProducer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +52,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/org/example" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.LaunchTelematicsDataLoader">
+  <component name="RunManager" selected="Application.org.couchbase.LaunchTelematicsDataLoader">
     <configuration name="CouchbaseTelematicsDataGenReactive" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.CouchbaseTelematicsDataGenReactive" />
       <module name="TelematicsDataGenerator" />
@@ -83,9 +79,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LaunchTelematicsDataLoader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="org.couchbase.LaunchTelematicsDataLoader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.couchbase.LaunchTelematicsDataLoader" />
       <module name="TelematicsDataGenerator" />
+      <option name="VM_PARAMETERS" value="-Xmx8000M" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.couchbase.*" />
@@ -96,9 +93,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.CouchbaseTelematicsDataGenerator" />
+      <item itemvalue="Application.CouchbaseTelematicsDataGenReactive" />
+      <item itemvalue="Application.org.couchbase.LaunchTelematicsDataLoader" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.LaunchTelematicsDataLoader" />
+        <item itemvalue="Application.org.couchbase.LaunchTelematicsDataLoader" />
         <item itemvalue="Application.CouchbaseTelematicsDataGenerator" />
       </list>
     </recent_temporary>
@@ -115,7 +117,8 @@
       <workItem from="1692073385804" duration="4568000" />
       <workItem from="1692107107217" duration="14160000" />
       <workItem from="1692243800183" duration="27514000" />
-      <workItem from="1692319932235" duration="9005000" />
+      <workItem from="1692319932235" duration="11610000" />
+      <workItem from="1692338243504" duration="2692000" />
     </task>
     <servers />
   </component>
