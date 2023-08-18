@@ -1,13 +1,14 @@
 package org.couchbase;
 
-import com.couchbase.client.core.env.IoConfig;
-import com.couchbase.client.core.env.NetworkResolution;
-import com.couchbase.client.core.env.TimeoutConfig;
 import com.couchbase.client.java.*;
-import com.couchbase.client.java.env.ClusterEnvironment;
 
 import java.time.Duration;
 
+/**
+ * This singleton class ensures only one instance of couchbase cluster connection.
+ *
+ * @author abhijeetbehera
+ */
 public class DatabaseConfiguration {
 
 	private static final String CONNECTION_STRING = "couchbases://cb.qa0ahhlpdg60bjiq.cloud.couchbase.com";

@@ -20,14 +20,14 @@ public class LaunchTelematicsDataLoader {
 
 		BlockingQueue<List<JsonObject>> sharedTasksQueue = new LinkedBlockingQueue<List<JsonObject>>();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(40);
+		ExecutorService executorService = Executors.newFixedThreadPool(ConcurrencyConfig.EXECUTOR_THREAD_POOL);
 
-		IntStream.range(0, 20)
+		IntStream.range(ConcurrencyConfig.PRODUCER_START_RANGE, ConcurrencyConfig.PRODUCER_END_RANGE)
 				.forEach(i -> {
 					executorService.execute(new TelematicsDataProducer(sharedTasksQueue));
 				});
 
-		IntStream.range(0, 20)
+		IntStream.range(ConcurrencyConfig.CONSUMER_START_RANGE, ConcurrencyConfig.CONSUMER_END_RANGE)
 				.forEach(i -> {
 					executorService.execute(new TelematicsDataConsumer(sharedTasksQueue));
 				});

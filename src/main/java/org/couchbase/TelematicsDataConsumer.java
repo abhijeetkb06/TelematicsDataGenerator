@@ -1,20 +1,18 @@
 package org.couchbase;
 
-import com.couchbase.client.java.ReactiveBucket;
-import com.couchbase.client.java.ReactiveCluster;
-import com.couchbase.client.java.ReactiveCollection;
-import com.couchbase.client.java.ReactiveScope;
 import com.couchbase.client.java.json.JsonObject;
 import com.couchbase.client.java.kv.MutationResult;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import static org.couchbase.TelematicsDataProducer.generateMockDataParallel;
-
+/**
+ * This initiates the process of bulk data insert in Couchbase using reactive apis.
+ *
+ * @author abhijeetbehera
+ */
 public class TelematicsDataConsumer extends Thread {
 
 	// Read data to consume once data is loaded in queue
@@ -37,7 +35,7 @@ public class TelematicsDataConsumer extends Thread {
 //				bulkInsert(generateMockDataParallel());
 				System.out.println(" CONSUMED \n");
 				System.out.println(" Thread Name: " + Thread.currentThread().getName());
-//				Thread.sleep(2000);
+//				Thread.sleep(100);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,13 +44,11 @@ public class TelematicsDataConsumer extends Thread {
 
 	private List<MutationResult> bulkInsert(List<JsonObject> data) {
 		DatabaseConfiguration dbConfig = DatabaseConfiguration.getInstance();
-		int concurrentOps = 20;
 		return Flux.fromIterable(data)
-				.parallel(concurrentOps)
+				.parallel(ConcurrencyConfig.BULK_INSERT_CONCURRENT_OPS)
 				.runOn(Schedulers.boundedElastic()) // or one of your choice
 				.flatMap(doc -> dbConfig.getCollection().upsert(doc.getString("MessageId"),doc))
 		        .doOnError(e -> Flux.empty())
-//                .concatMap(doc -> collection.upsert(doc.getString("key"),doc, UpsertOptions.upsertOptions().durability(finalDlevel)),16)
 				.sequential()
 				.collectList()
 				.block();
