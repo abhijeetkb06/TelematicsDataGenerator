@@ -2,6 +2,7 @@ package org.couchbase;
 
 
 import com.couchbase.client.core.error.CouchbaseException;
+import com.couchbase.client.java.json.JsonArray;
 import com.couchbase.client.java.json.JsonObject;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
@@ -60,58 +61,46 @@ public class TelematicsDataProducer extends Thread {
     }
 
     private static JsonObject generateMockData(int index) {
-
         Random random = new Random();
 
         JsonObject jsonData = JsonObject.from(new LinkedHashMap<>());
 
         jsonData.put("MessageId", UUID.randomUUID().toString());
-
         jsonData.put("DeviceId", "vehicle" + random.nextInt(100));
-
         jsonData.put("EventTime", Instant.now().toString());
 
-        jsonData.put("Orgs", JsonObject.create().put("org1", random.nextInt(100)).put("org2", random.nextInt(100)));
+        // Orgs represented as an array of objects
+        JsonArray orgsArray = JsonArray.from("org1" + random.nextInt(1000), "org2" + random.nextInt(1000));
+        jsonData.put("Orgs", orgsArray);
 
-        JsonObject payload = JsonObject.create();
+        JsonObject payload = JsonObject.from(new LinkedHashMap<>());
 
-        payload.put("telematics", JsonObject.create()
+        JsonObject telematics = JsonObject.from(new LinkedHashMap<>());
+        telematics.put("vehicleId", "ABC" + random.nextInt(1000));
 
-                .put("vehicleId", "ABC" + random.nextInt(1000))
+        JsonObject location = JsonObject.from(new LinkedHashMap<>());
+        location.put("latitude", 30 + random.nextDouble() * 20);
+        location.put("longitude", -120 + random.nextDouble() * 60);
+        telematics.put("location", location);
 
-                .put("location", JsonObject.create()
+        telematics.put("speed", random.nextInt(100));
+        telematics.put("fuelLevel", random.nextInt(100));
+        telematics.put("engineStatus", random.nextBoolean() ? "running" : "stopped");
 
-                        .put("latitude", 30 + random.nextDouble() * 20)
+        JsonObject tirePressure = JsonObject.from(new LinkedHashMap<>());
+        tirePressure.put("frontLeft", 28 + random.nextInt(10));
+        tirePressure.put("frontRight", 28 + random.nextInt(10));
+        tirePressure.put("rearLeft", 28 + random.nextInt(10));
+        tirePressure.put("rearRight", 28 + random.nextInt(10));
+        telematics.put("tirePressure", tirePressure);
 
-                        .put("longitude", -120 + random.nextDouble() * 60))
-
-                .put("speed", random.nextInt(100))
-
-                .put("fuelLevel", random.nextInt(100))
-
-                .put("engineStatus", random.nextBoolean() ? "running" : "stopped")
-
-                .put("tirePressure", JsonObject.create()
-
-                        .put("frontLeft", 28 + random.nextInt(10))
-
-                        .put("frontRight", 28 + random.nextInt(10))
-
-                        .put("rearLeft", 28 + random.nextInt(10))
-
-                        .put("rearRight", 28 + random.nextInt(10)))
-
-                .put("driver", JsonObject.create()
-
-                        .put("name", "Driver" + random.nextInt(1000))
-
-                        .put("licenseNumber", "ABC" + random.nextInt(1000))
-
-                        .put("status", random.nextBoolean() ? "active" : "inactive")));
-
+        JsonObject driver = JsonObject.from(new LinkedHashMap<>());
+        driver.put("name", "Driver" + random.nextInt(1000));
+        driver.put("licenseNumber", "ABC" + random.nextInt(1000));
+        driver.put("status", random.nextBoolean() ? "active" : "inactive");
+        telematics.put("driver", driver);
+        payload.put("telematics", telematics);
         jsonData.put("Payload", payload);
-
         return jsonData;
-
     }
 }
