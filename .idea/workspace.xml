@@ -7,7 +7,6 @@
     <list default="true" id="1fa543fd-38f2-4880-a4a0-30ca9a08a612" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/couchbase/DatabaseConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/couchbase/DatabaseConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/couchbase/TelematicsDataProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/couchbase/TelematicsDataProducer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +121,10 @@
       <workItem from="1692338243504" duration="2692000" />
       <workItem from="1692412795577" duration="134000" />
       <workItem from="1692413083934" duration="1162000" />
-      <workItem from="1692542839043" duration="8033000" />
+      <workItem from="1692542839043" duration="8510000" />
+      <workItem from="1692622168537" duration="2628000" />
+      <workItem from="1692648885217" duration="834000" />
+      <workItem from="1692999227063" duration="1967000" />
     </task>
     <servers />
   </component>

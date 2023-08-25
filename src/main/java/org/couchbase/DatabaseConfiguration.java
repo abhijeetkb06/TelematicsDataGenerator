@@ -11,12 +11,16 @@ import java.time.Duration;
  */
 public class DatabaseConfiguration {
 
-	private static final String CONNECTION_STRING = "couchbases://cb.ghkbcussogmddyyy.cloud.couchbase.com";
+	private static final String CONNECTION_STRING = "couchbases://cb.y0wtvqcpsjjutxzd.cloud.couchbase.com";
 	private static final String USERNAME = "abhijeet";
 	private static final String PASSWORD = "Password@P1";
 	private static final String BUCKET = "fleetdata";
 	private static final String SCOPE = "_default";
 	private static final String COLLECTION = "_default";
+	public static final ReactiveCluster REACTIVE_CLUSTER;
+	public static final ReactiveBucket REACTIVE_BUCKET;
+	public static final ReactiveScope REACTIVE_SCOPE;
+	public static final ReactiveCollection REACTIVE_COLLECTION;
 
 	private static volatile DatabaseConfiguration instance;
 
@@ -37,6 +41,11 @@ public class DatabaseConfiguration {
 		bucket.waitUntilReady(Duration.ofSeconds(10));
 		scope = bucket.scope(SCOPE);
 		collection = scope.collection(COLLECTION);
+
+		REACTIVE_CLUSTER = cluster.reactive();
+		REACTIVE_BUCKET = bucket.reactive();
+		REACTIVE_SCOPE = scope.reactive();
+		REACTIVE_COLLECTION = collection.reactive();
 	}
 
 	private DatabaseConfiguration() {
@@ -55,18 +64,18 @@ public class DatabaseConfiguration {
 	}
 
 	public ReactiveCluster getCluster() {
-		return cluster.reactive();
+		return REACTIVE_CLUSTER;
 	}
 
 	public ReactiveBucket getBucket() {
-		return bucket.reactive();
+		return REACTIVE_BUCKET;
 	}
 
 	public ReactiveScope getScope() {
-		return scope.reactive();
+		return REACTIVE_SCOPE;
 	}
 
 	public ReactiveCollection getCollection() {
-		return collection.reactive();
+		return REACTIVE_COLLECTION;
 	}
 }
